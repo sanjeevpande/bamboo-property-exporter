@@ -1,0 +1,19 @@
+<html lang="en">
+<head>
+    $webResourceManager.requireResource("com.baba.plugins:property-exporter-resources")
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Configuration</title>
+    <style>
+        body {
+            background-color: green;
+        }
+    </style>
+
+</head>
+<body>
+
+    <div>Hello</div>
+
+</body>
+</html>

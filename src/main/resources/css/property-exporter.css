@@ -1,0 +1,27 @@
+#root {
+	padding-left: 20px;
+}
+.build {
+    display: flex;
+}
+.build.heading > span {
+	font-weight: 600;
+}
+.build > span {
+    flex-basis: 20%;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 8px;
+    padding-top: 8px;
+    height: inherit;
+}
+.report-link a.aui-icon-small:before {
+    font-size: 20px;
+    margin-top: -8px;
+}
+.fetch-report a.aui-icon-small:before, .plan-branches a.aui-icon-small:before {
+    font-size: 22px;
+    margin-top: -10px;
+}
+.planBranchName {
+    max-width: 140px;
+}

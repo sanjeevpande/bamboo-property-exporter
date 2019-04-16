@@ -1,0 +1,54 @@
+<atlassian-plugin key="${atlassian.plugin.key}" name="${project.name}" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}" />
+        <param name="plugin-icon">images/pluginIcon.png</param>
+        <param name="plugin-logo">images/pluginLogo.png</param>
+        <param name="configure.url">/admin/exporter/settings.action</param>
+    </plugin-info>
+
+    <!-- add our i18n resource -->
+    <resource type="i18n" name="i18n" location="property-exporter"/>
+    
+    <!-- add our web resources -->
+    <web-resource key="property-exporter-resources" name="property-exporter Web Resources">
+        <dependency>com.atlassian.auiplugin:ajs</dependency>
+        
+        <resource type="download" name="property-exporter.css" location="/css/property-exporter.css"/>
+        <resource type="download" name="property-exporter.js" location="/js/property-exporter.js"/>
+        <resource type="download" name="images/" location="/images"/>
+
+        <context>property-exporter</context>
+    </web-resource>
+
+    <web-item name="Property Exporter Admin Settings Link" key="property-exporter-configuration" section="system.admin/plugins" weight="101">
+        <label key="baba.plugin.section.label.name"/>
+        <description key="baba.plugin.configuration.label.name"/>
+        <link linkId="property-exporter-configuration">/admin/exporter/settings.action</link>
+        />
+        <resource type="download" name="property-exporter.js" location="/js/property-exporter.js"/>
+    </web-item>
+
+    <xwork name="Property Exporter Actions" key="property-exporter-actions">
+        <package name="property-exporter-action-admin" extends="admin" namespace="/admin/exporter">
+            <action name="settings" class="com.baba.plugins.action.Configuration" method="input">
+                <result name="input" type="freemarker">/templates/settings.ftl</result>
+                <result name="success" type="freemarker">/templates/settings.ftl</result>
+                <result name="error" type="freemarker">/templates/settings.ftl</result>
+            </action>
+        </package>
+    </xwork>
+
+    <servlet name="Exporter Servlet" key="property-exporter-servlet" class="com.baba.plugins.servlet.PropertyExporter">
+        <url-pattern>/exporter/metrics/*</url-pattern>
+    </servlet>
+
+    <additionalBuildConfigurationPlugin key="concurrentBuild" name="Concurrent Build Configuration"
+        class="com.baba.plugins.action.ConcurrentBuildsPlanConfigurationPlugin">
+        <description>Plugin to configure maximum number of concurrent builds for a plan</description>
+        <resource type="freemarker" name="edit" location="/templates/editConcurrentBuildsConfigForPlan.ftl"/>
+        <resource type="freemarker" name="view" location="/templates/viewConcurrentBuildsConfigForPlan.ftl"/>
+    </additionalBuildConfigurationPlugin>
+    
+</atlassian-plugin>
