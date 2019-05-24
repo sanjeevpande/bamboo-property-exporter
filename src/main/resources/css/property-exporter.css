@@ -23,5 +23,5 @@
     margin-top: -10px;
 }
 .planBranchName {
-    max-width: 140px;
+    max-width: 140px !important;
 }

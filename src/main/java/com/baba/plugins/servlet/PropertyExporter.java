@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.util.Iterator;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -27,7 +26,8 @@ public class PropertyExporter extends HttpServlet {
             final HttpServletResponse httpServletResponse) throws IOException {
 
         httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-        httpServletResponse.setContentType("text/plain");
+        httpServletResponse.setContentType("text/plain; charset=UTF-8");
+        httpServletResponse.setCharacterEncoding("UTF-8");
 
         try (Writer writer = httpServletResponse.getWriter()) {
             PrintWriter out = httpServletResponse.getWriter();
@@ -36,15 +36,11 @@ public class PropertyExporter extends HttpServlet {
             String[] pathParts = pathInfo.split("/");
             String reportId = pathParts[pathParts.length - 1];
 
-            System.out.println("\n\n\n\n\n\n\n\n");
-            System.out.println("get: " + reportId);
-            System.out.println("\n\n\n\n\n\n\n\n");
-
             String report = "";
             if(Objects.nonNull(reportId)) {
                 report = (String) getServletConfig().getServletContext().getAttribute(reportId);
             }
-            out.println(report);
+            out.print(report);
             writer.flush();
         }
     }
@@ -67,17 +63,15 @@ public class PropertyExporter extends HttpServlet {
                 JSONObject item = (JSONObject) reportJson.get(i);
                 String key = item.get("key").toString();
                 String value = item.get("value").toString();
-                key = key.replace(".", "_");
                 if(StringUtils.contains(key, "CLOVER")) {
+                    key = key.replace(".", "_");
                     sb.append(key).append(" ").append(value).append("\n");
                 }
             }
 
-            System.out.println("\n\n\n\n\n\n\n\n");
-            System.out.println("post: " + reportId);
-            System.out.println("\n\n\n\n\n\n\n\n");
+            String outputString = StringUtils.chomp(sb.toString());
 
-            getServletConfig().getServletContext().setAttribute(reportId, sb.toString());
+            getServletConfig().getServletContext().setAttribute(reportId, outputString);
 
         } catch (JSONException e) {
             e.printStackTrace();
